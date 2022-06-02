@@ -24,7 +24,7 @@ public class PersonaService {
     @Autowired
     ModelMapper modelMapper;
 
-    public PersonaOutputDTO addPersona(PersonaInputDTO persona) throws Exception {
+    public PersonaOutputDTO addPersona(PersonaInputDTO persona) throws UnprocesableException {
         if(persona.getUsuario() == null || persona.getPassword() == null || persona.getName() == null || persona.getCompany_email() == null
                 || persona.getPersonal_email() == null || persona.getCity() == null || persona.getActive() == null || persona.getCreated_date() == null
                 || persona.getUsuario().length() > 10) throw new UnprocesableException("Los campos no se han establecido de manera correcta");
@@ -71,11 +71,6 @@ public class PersonaService {
     public PersonaOutputDTO updatePersona(int id, PersonaInputDTO persona) {
         Optional<Persona> personEntity = personaRepository.findById(id);
         if(personEntity.isPresent()){
-
-            if(persona.getUsuario() == null || persona.getPassword() == null || persona.getName() == null || persona.getCompany_email() == null
-                    || persona.getPersonal_email() == null || persona.getCity() == null || persona.getActive() == null || persona.getCreated_date() == null
-                    || persona.getUsuario().length() > 6 && persona.getUsuario().length() < 10) throw new UnprocesableException("Los campos no se han establecido de manera correcta");
-            personaRepository.saveAndFlush(modelMapper.map(persona, Persona.class));
 
             persona.setId_persona(id);
             persona.setUsuario(Optional.ofNullable(persona.getUsuario()).orElse(personEntity.get().getUsuario()));
